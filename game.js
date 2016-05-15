@@ -2,7 +2,9 @@
 
 var Game = (function Game(){
 
-	// TODO(4): add a `computerPlayerSkill` variable
+	var computerPlayerSkill = 1;	// -1: Two-player, no computer
+									// 0: easy mode
+									// 1: hard mode
 
 	var whoseTurn = 1;	// 0: O
 						// 1: X   <--- don't change!
@@ -350,8 +352,8 @@ var Game = (function Game(){
 			// undo previewing for this box
 			movePreviewRow = movePreviewColumn = null;
 
-			// TODO(4): let the computer play its move now
-
+			// let the computer play, if enabled
+			computerPlayer();
 		}
 	}
 
@@ -371,11 +373,13 @@ var Game = (function Game(){
 
 			// should the computer use its best move?
 			if (makeBestMove) {
-
-				// TODO(4): have the computer player figure out
-				// its next move
-
-				movesPlayed = movesPlayed + 1;
+				var nextMove = nextComputerMove( gameBoard, false, movesPlayed );
+				if (nextMove[1]) {
+					// replace the game board with an updated one with
+					// the next move in it
+					gameBoard = nextMove[1];
+					movesPlayed = movesPlayed + 1;
+				}
 			}
 			// just make a move in the first open box
 			else {
@@ -383,9 +387,7 @@ var Game = (function Game(){
 					for ( var column = 0; column <= 2; column = column + 1 ) {
 						// found an empty box?
 						if ( gameBoard[row][column] == null) {
-
-							// TODO(4): make a move in this box
-
+							gameBoard[row][column] = whoseTurn;
 							movesPlayed = movesPlayed + 1;
 
 							// stop the loops since we've made our move
@@ -470,28 +472,20 @@ var Game = (function Game(){
 		if (win[0] != null && win[1] != null) {
 			// minor diagonal
 			if (win[1] == 2) {
-
-				// TODO(4): check if (0,2) is a computer move?
-
+				return board[0][2] == 0;
 			}
 			// major diagonal?
 			else if (win[1] == 0) {
-
-				// TODO(4): check if (0,0) is a computer move?
-
+				return board[0][0] == 0;
 			}
 		}
 		// row?
 		else if (win[0] != null) {
-
-			// TODO(4): check if (row,0) is a computer move?
-
+			return board[win[0]][0] == 0;
 		}
 		// column?
 		else if (win[1] != null) {
-
-			// TODO(4): check if (0,column) is a computer move?
-
+			return board[0][win[1]] == 0;
 		}
 	}
 

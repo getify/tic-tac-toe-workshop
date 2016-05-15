@@ -1,4 +1,6 @@
-# Making A Game: Tic-Tac-Toe (Step 4)
+# Making A Game: Tic-Tac-Toe (FINAL)
+
+[PLAY THE GAME ONLINE](https://rawgit.com/getify/tic-tac-toe-workshop/final/index.html)
 
 This is a set of workshop files for writing (parts of) a JS + `<canvas>` Tic-Tac-Toe game.
 
