@@ -36,4 +36,6 @@ body {
 	cursor: pointer;
 }
 
-/* TODO(3): add style to hide cat.jpg <img> */
+#cat-game {
+	display: none;
+}

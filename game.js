@@ -17,9 +17,7 @@ var Game = (function Game(){
 	// elements from the HTML
 	var cnv = document.getElementById("game");
 	var ctx = cnv.getContext("2d");
-
-	// TODO(3): get the cat image from the HTML
-	// var tieGameImg = ..
+	var tieGameImg = document.getElementById("cat-game");
 
 	var lastMovesPlayed;
 	var movesPlayed;
@@ -83,13 +81,14 @@ var Game = (function Game(){
 			if (movesPlayed != lastMovesPlayed) {
 				lastMovesPlayed = movesPlayed;
 
-				var gameWon = false;
-				var gameTied = false;
+				var gameWon = checkBoardForWin( gameBoard );
 
-				// TODO(3): first, check for a win, then if
-				// there's been at least 6 moves, check for
-				// a tie
-
+				if (gameWon) {
+					var gameTied = false;
+				}
+				else {
+					var gameTied = (movesPlayed >= 6 && checkBoardForTie( gameBoard, whoseTurn ));
+				}
 			}
 		}
 		else {
@@ -113,9 +112,13 @@ var Game = (function Game(){
 		drawBoardGrid();
 		drawMoves( gameBoard );
 
-		// TODO(3): if a win, draw it. if a tie, draw it.
-
-		if (movePreviewRow != null && movePreviewColumn != null) {
+		if (win) {
+			drawWin( win );
+		}
+		else if (gameTied) {
+			drawTie();
+		}
+		else if (movePreviewRow != null && movePreviewColumn != null) {
 			drawMovePreview( movePreviewRow, movePreviewColumn );
 		}
 	}
@@ -254,11 +257,15 @@ var Game = (function Game(){
 			var endY = calculateBoxY( 2 ) + boxSize - halfLineSize;
 		}
 
-		// TODO(3): set up a line that's `gridLineSize` width,
-		// rounded cap, blue in color, and 70% opaque
-		//
-		// then, draw the line using `startX`, `startY`, etc
+		ctx.save();
+		ctx.lineWidth = gridLineSize;
+		ctx.lineCap = "round";
+		ctx.strokeStyle = "#00f";
+		ctx.globalAlpha = 0.7;
 
+		drawLine( startX, startY, endX, endY );
+
+		ctx.restore();
 	}
 
 	function drawTie() {
@@ -270,10 +277,11 @@ var Game = (function Game(){
 		var x = startBoardX + Math.floor( (boardSize - newWidth) / 2 );
 		var y = startBoardY + Math.floor( (boardSize - newHeight) / 2 );
 
-		// TODO(3): set to 80% opacity, then draw the `tieGameImg`
-		// cat image using the `x`, `y`, `newWidth`, and `newHeight`
-		// variables
+		ctx.save();
+		ctx.globalAlpha = 0.8;
+		ctx.drawImage( tieGameImg, x, y, newWidth, newHeight );
 
+		ctx.restore();
 	}
 
 	function determineMovePreview(evt) {
