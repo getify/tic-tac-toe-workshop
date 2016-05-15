@@ -43,8 +43,8 @@ var Game = (function Game(){
 
 	function start() {
 		window.addEventListener( "resize", debounce( onViewportResize, 100 ) );
-
-		// TODO(2): add event listeners for "mousemove" and "click"
+		document.addEventListener( "mousemove", determineMovePreview );
+		document.addEventListener( "click", makeMove );
 
 		onViewportResize();
 		setupGame();
@@ -54,8 +54,10 @@ var Game = (function Game(){
 	function setupGame() {
 		lastMovesPlayed = movesPlayed = 0;
 
-		// TODO(2): set all boxes on the board to empty
-
+		// set all boxes on the board to empty
+		for ( var row = 0; row <= 2; row = row + 1 ) {
+			gameBoard[row][0] = gameBoard[row][1] = gameBoard[row][2] = null;
+		}
 	}
 
 	// called any time the browser window is resized
@@ -109,12 +111,13 @@ var Game = (function Game(){
 		ctx.fillRect( 0, 0, cnv.width, cnv.height );
 
 		drawBoardGrid();
-
-		// TODO(2): draw the moves that have been played
+		drawMoves( gameBoard );
 
 		// TODO(3): if a win, draw it. if a tie, draw it.
 
-		// TODO(2): if we need to show a move-preview, draw it
+		if (movePreviewRow != null && movePreviewColumn != null) {
+			drawMovePreview( movePreviewRow, movePreviewColumn );
+		}
 	}
 
 	function drawBoardGrid() {
@@ -148,9 +151,13 @@ var Game = (function Game(){
 	function drawMoves(board) {
 		for ( var row = 0; row <= 2; row = row + 1 ) {
 			for (var column = 0; column <= 2; column = column + 1 ) {
-
-				// TODO(2): draw an O or an X if it's in this box
-
+				// 0: o, 1: x
+				if (board[row][column] == 0) {
+					drawO( row, column );
+				}
+				else if (board[row][column] == 1) {
+					drawX( row, column );
+				}
 			}
 		}
 	}
@@ -190,7 +197,9 @@ var Game = (function Game(){
 		ctx.save();
 		ctx.lineWidth = Math.ceil( gridLineSize / 2 );
 
-		// TODO(2): draw the circle for the O
+		ctx.beginPath();
+		ctx.arc( centerX, centerY, halfPaddedBoxSize, 0, 2 * Math.PI );
+		ctx.stroke();
 
 		ctx.restore();
 	}
@@ -199,7 +208,13 @@ var Game = (function Game(){
 		ctx.save();
 		ctx.strokeStyle = "#bbb";
 
-		// TODO(2): draw if this move-preview is an X or O
+		// 0: o, 1: x
+		if (whoseTurn == 0) {
+			drawO( row, column );
+		}
+		else {
+			drawX( row, column );
+		}
 
 		ctx.restore();
 	}

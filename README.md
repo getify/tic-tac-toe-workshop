@@ -1,4 +1,4 @@
-# Making A Game: Tic-Tac-Toe (Step 2)
+# Making A Game: Tic-Tac-Toe (Step 3)
 
 This is a set of workshop files for writing (parts of) a JS + `<canvas>` Tic-Tac-Toe game.
 
