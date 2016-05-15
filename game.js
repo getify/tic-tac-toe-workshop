@@ -129,9 +129,7 @@ var Game = (function Game(){
 			var endX = startX + (3 * boxSize) + (2 * gridLineSize);
 			var endY = startY;
 
-			// TODO(1): draw horizontal line with `startX`,
-			// `startY`, `endX`, and `endY` variables
-
+			drawLine( startX, startY, endX, endY );
 		}
 
 		// draw vertical grid lines
@@ -141,9 +139,7 @@ var Game = (function Game(){
 			var endX = startX;
 			var endY = startY + (3 * boxSize) + (2 * gridLineSize);
 
-			// TODO(1): draw vertical line with `startX`,
-			// `startY`, `endX`, and `endY` variables
-
+			drawLine( startX, startY, endX, endY );
 		}
 
 		ctx.restore();
@@ -160,10 +156,10 @@ var Game = (function Game(){
 	}
 
 	function drawLine(startX,startY,endX,endY) {
-
-		// TODO(1): use `moveTo(..)` and `lineTo(..)` to
-		// draw the line, then `stroke()` it.
-
+		ctx.beginPath();
+		ctx.moveTo( startX, startY );
+		ctx.lineTo( endX, endY );
+		ctx.stroke();
 	}
 
 	function drawX(boxRow,boxColumn) {
